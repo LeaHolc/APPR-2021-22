@@ -1,6 +1,6 @@
 ---
 title: "Poročilo pri predmetu Analiza podatkov s programom R"
-author: "Študent FMF"
+author: "Lea Holc"
 output:
   html_document: default
   pdf_document:
@@ -20,7 +20,7 @@ source("lib/libraries.r", encoding="UTF-8")
 
 ## Izbira teme
 
-***
+Predmet moje analize bo izobrazbena struktura prebivalstva Slovenije po občinah in glavni makroekonski kazalci povezani s stopnjo izobrazbe.
 
 ## Obdelava, uvoz in čiščenje podatkov
 
@@ -28,7 +28,38 @@ source("lib/libraries.r", encoding="UTF-8")
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-***
+Podatke bom uvozila v obliki CSV in Excel datotek.
+
+1. Tabela 1: Struktura prebivalstva Slovenije po občinah glede na stopnjo izobrazbe
+
+* `leto` - spremenljivka: leto meritve (število)
+* `občina`- spremenljivka: ime občine
+* `stevilo_prebivalcev` - meritev: število prebivalcev posamezne občine
+* `osnovnosolska_ali_manj` - meritev: delež prebivalcev z osnovnošolsko izobrazbo ali manj
+* `srednjesolska`- meritev: delež prebivalcev s srednješolsko izobrazbo
+* `visokosolska_1_stopnja`- meritev: delež prebivalcev z visokošolsko izobrazbo 1. stopnje
+* `visokosolska_2_stopnja`- meritev: delež prebivalcev z visokošolsko izobrazbo 2. stopnje
+* `visokosolska_3_stopnja`- meritev: delež prebivalcev z visokošolsko izobrazbo 3. stopnje
+* `visjesolska_visokosolska_skupaj`- meritev: skupni delež prebivalcev z visokošolsko ali višješolsko izobrazbo
+
+2. Tabela 2: Povprečne plače in stopnja brezposelnosti glede na stopnjo izobrazbe
+
+* `leto`- spremenljivka: leto meritve (število)
+* `občina`- spremenljivka: ime občine
+* `stevilo_prebivalcev` - meritev: število prebivalcev posamezne občine
+* `povprecna_neto_placa` - meritev: povprečna neto plača prebivalca posamezne občine
+* `povprecna_bruto_placa` - meritev: povprečna bruto plača prebivalca posamezne občine
+* `brezposelnost_osnovnosolska_ali_manj`- meritev: delež registriranih brezposelnih prebivalcev z osnovnošolsko izobrazbo ali manj
+* `brezposelnost_srednjesolska`- meritev: delež registriranih brezposelnih prebivalcev s srednješolsko izobrazbo
+* `brezposelnost_visjesolska_visokosolska_skupaj`- meritev: skupni delež registriranih brezposelnih prebivalcev z visokošolsko ali višješolsko izobrazbo
+* `brezposelnost_skupaj` - meritev: skupni delež registriranih brezposelnih prebivalcev
+
+3. Tabela 3: Primerjava razlike plač med moškimi in ženskami
+
+* `leto` - spremenljivka: leto meritve (število)
+* `občina`- spremenljivka: ime občine
+* `stevilo_studentk_na_100_studentov` - meritev: število študentk na 100 študentov
+* `razlika_v_placi` - meritev:  razlika med povprečno bruto plačo moških na uro in povprečno bruto plačo žensk na uro kot delež povprečne bruto plače moških na uro
 
 ## Analiza in vizualizacija podatkov
 

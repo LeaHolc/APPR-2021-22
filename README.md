@@ -2,10 +2,51 @@
 
 Vzorčni repozitorij za projekt pri predmetu APPR v študijskem letu 2021/22. 
 
-## Tematika
+## Struktura prebivalstva Slovenije glede na stopnjo izobrazbe
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
-Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+V projektu bom analizirala strukturo prebivalstva Slovenije po občinah glede na stopnjo izobrazbe. Zanimali me bodo deleži (delež prebivalstva z določeno stopnjoizobrazbe), saj ti omogočajo najboljšo primerjavo glede na razlike v velikosti občin. 
+
+V nadaljevanju se bom osredotočila predvsem na makroekonomske kazalce; torej višino plač in stopnjo brezposelnosti. Opazovala bom povezave med stopnjo izobrazbe, povprečno mesečno neto plačo in stopnjo brezposelnosti po občinah.
+
+Zanimale me bodo tudi razlike med spoloma. Predvsem razlika v višini plač in število moških in žensk z višje ali visokošolsko izobrazbo.
+
+Kot vir podatkov bom uporabila naslednje spletne strani:
+
+* https://pxweb.stat.si/SiStat/sl
+* https://www.ess.gov.si/trg_dela/trg_dela_v_stevilkah/registrirana_brezposelnost#Ob%C4%8Dine
+
+Tabele:
+
+1. Tabela 1: Struktura prebivalstva Slovenije po občinah glede na stopnjo izobrazbe
+
+* `leto`
+* `občina`
+* `stevilo_prebivalcev`
+* `osnovnosolska_ali_manj`
+* `srednjesolska`
+* `visokosolska_1_stopnja`
+* `visokosolska_2_stopnja`
+* `visokosolska_3_stopnja`
+* `visjesolska_visokosolska_skupaj`
+
+2. Tabela 2: Povprečne plače in stopnja brezposelnosti glede na stopnjo izobrazbe
+
+* `leto`
+* `občina`
+* `stevilo_prebivalcev`
+* `povprecna_neto_placa`
+* `povprecna_bruto_placa`
+* `brezposelnost_osnovnosolska_ali_manj`
+* `brezposelnost_srednjesolska`
+* `brezposelnost_visjesolska_visokosolska_skupaj`
+* `brezposelnost_skupaj`
+
+3. Tabela 3: Primerjava razlike plač med moškimi in ženskami
+
+* `leto`
+* `občina`
+* `stevilo_studentk_na_100_studentov`
+* `razlika_v_placi`
 
 ## Program
 
