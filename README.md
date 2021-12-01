@@ -17,7 +17,7 @@ Kot vir podatkov bom uporabila naslednje spletne strani:
 
 Tabele:
 
-1. Tabela 1: Struktura prebivalstva Slovenije po občinah glede na stopnjo izobrazbe
+1. Tabela 1: Struktura prebivalstva Slovenije po občinah glede na stopnjo izobrazbe od leta 2012 do leta 2020
 
 * `leto`
 * `občina`
@@ -29,23 +29,23 @@ Tabele:
 * `visokosolska_3_stopnja`
 * `visjesolska_visokosolska_skupaj`
 
-2. Tabela 2: Povprečne plače in stopnja brezposelnosti glede na stopnjo izobrazbe
+2. Tabela 2: Stopnja brezposelnosti glede na stopnjo izobrazbe od leta 2017 do 2020
 
 * `leto`
 * `občina`
 * `stevilo_prebivalcev`
-* `povprecna_neto_placa`
-* `povprecna_bruto_placa`
 * `brezposelnost_osnovnosolska_ali_manj`
 * `brezposelnost_srednjesolska`
 * `brezposelnost_visjesolska_visokosolska_skupaj`
 * `brezposelnost_skupaj`
 
-3. Tabela 3: Primerjava razlike plač med moškimi in ženskami
+3. Tabela 3: Primerjava višine plač po občinah ter razlike v plači med moškimi in ženskami od leta 2012 do 2020
 
 * `leto`
 * `občina`
 * `stevilo_studentk_na_100_studentov`
+* `povprecna_neto_placa`
+* `povprecna_bruto_placa`
 * `razlika_v_placi`
 
 ## Program

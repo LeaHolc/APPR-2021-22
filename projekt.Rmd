@@ -47,8 +47,7 @@ Podatke bom uvozila v obliki CSV in Excel datotek.
 * `leto`- spremenljivka: leto meritve (število)
 * `občina`- spremenljivka: ime občine
 * `stevilo_prebivalcev` - meritev: število prebivalcev posamezne občine
-* `povprecna_neto_placa` - meritev: povprečna neto plača prebivalca posamezne občine
-* `povprecna_bruto_placa` - meritev: povprečna bruto plača prebivalca posamezne občine
+
 * `brezposelnost_osnovnosolska_ali_manj`- meritev: delež registriranih brezposelnih prebivalcev z osnovnošolsko izobrazbo ali manj
 * `brezposelnost_srednjesolska`- meritev: delež registriranih brezposelnih prebivalcev s srednješolsko izobrazbo
 * `brezposelnost_visjesolska_visokosolska_skupaj`- meritev: skupni delež registriranih brezposelnih prebivalcev z visokošolsko ali višješolsko izobrazbo
@@ -59,6 +58,8 @@ Podatke bom uvozila v obliki CSV in Excel datotek.
 * `leto` - spremenljivka: leto meritve (število)
 * `občina`- spremenljivka: ime občine
 * `stevilo_studentk_na_100_studentov` - meritev: število študentk na 100 študentov
+* `povprecna_neto_placa` - meritev: povprečna neto plača prebivalca posamezne občine
+* `povprecna_bruto_placa` - meritev: povprečna bruto plača prebivalca posamezne občine
 * `razlika_v_placi` - meritev:  razlika med povprečno bruto plačo moških na uro in povprečno bruto plačo žensk na uro kot delež povprečne bruto plače moških na uro
 
 ## Analiza in vizualizacija podatkov
