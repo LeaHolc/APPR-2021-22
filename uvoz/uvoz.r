@@ -44,10 +44,15 @@ prebivalstvo.obcin.polletno <- prebivalstvo.obcin.polletno %>%
   )
 
 prebivalstvo.obcin <- prebivalstvo.obcin.polletno %>%
-  group_by(obcina, leto, spol) %>%
-  summarise(stevilo = as.integer(sum(stevilo) / 2))
+  group_by(obcina, leto, spol
+           ) %>% 
+  summarise(prebivalci = as.integer(sum(stevilo) / 2)) 
 
+  # mutate(prebivalci = as.integer(sum(stevilo) / 2)
+  #        ) %>%
+  # select("obcina", "leto", "spol", "prebivalci")
   
+
 # IZOBRAZBENA STRUKTURA PREBIVALSTVA
 
 izobrazbena.struktura <- read_csv2("podatki/prebivalstvo_po_spolu_in_st_izobrazbe.csv", skip = 2, na="-",
@@ -64,7 +69,27 @@ izobrazbena.struktura <- izobrazbena.struktura %>%
     into = c("leto", "izobrazba"),
     regex = "^(\\d{4})+(.*)$"
   ) %>%
-  relocate(obcina = OBČINE, leto, spol = SPOL, izobrazba, stevilo)
+  relocate(obcina = OBČINE, leto, spol = SPOL, izobrazba, stevilo
+           ) %>%
+  group_by(leto, obcina) %>%
+  arrange(obcina, .by_group = TRUE)
+
+
+# TABELA 1: STRUKTURA PREBIVALSTVA GLEDE NA STOPNJO IZOBRAZBE PO OBČINAH
+
+struktura.prebivalstva <- izobrazbena.struktura %>%
+  left_join(prebivalstvo.obcin, by = c("obcina", "leto", "spol")
+            ) %>% 
+  mutate(odstotek = round((stevilo / prebivalci)*100, 2)
+         )%>%
+  group_by(obcina) %>%
+  arrange(obcina, .by_group = TRUE)
+
+# poskus.pretvorbe <- pivot_wider(izobrazbena.struktura, names_from = "izobrazba", values_from = "stevilo")
+# 
+# prebivalstvo.izobrazba.struktura <- poskus.pretvorbe %>%
+#   left_join(prebivalstvo.obcin, by = c("obcina", "leto", "spol")) 
+
 
 # ŠTEVILO ŠTUDENTK NA 100 ŠTUDENTOV
 
