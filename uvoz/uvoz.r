@@ -27,7 +27,9 @@ prebivalstvo.obcin.polletno$OBČINE[prebivalstvo.obcin.polletno$OBČINE == "Kope
 prebivalstvo.obcin.polletno$OBČINE[prebivalstvo.obcin.polletno$OBČINE == "Lendava/Lendva"] <- "Lendava"
 prebivalstvo.obcin.polletno$OBČINE[prebivalstvo.obcin.polletno$OBČINE == "Piran/Pirano"] <- "Piran"
 
-prebivalstvo.obcin.polletno <- prebivalstvo.obcin.polletno %>% 
+prebivalstvo.obcin.polletno <- prebivalstvo.obcin.polletno %>%  
+  filter(OBČINE != "SLOVENIJA"
+         ) %>%
   pivot_longer(
     cols = colnames(prebivalstvo.obcin.polletno)[-c(1,2)],
     names_to = "polletje.starost",
@@ -42,7 +44,7 @@ prebivalstvo.obcin.polletno <- prebivalstvo.obcin.polletno %>%
          ) %>%
   select("spol", "obcina", "polletje", "stevilo"
          ) %>%
-  relocate(obcina, polletje, spol, stevilo)
+  relocate(obcina, polletje, spol, stevilo) 
 
 prebivalstvo.obcin.polletno <- prebivalstvo.obcin.polletno %>%
   tidyr::extract(
@@ -55,6 +57,25 @@ prebivalstvo.obcin <- prebivalstvo.obcin.polletno %>%
   group_by(obcina, leto, spol
            ) %>% 
   summarise(prebivalci = as.integer(sum(stevilo) / 2)) 
+
+obcine.regije <- read_csv("podatki/obcine-regije.csv", skip = 0, na = "-",
+                           locale = locale(encoding="utf-8"), col_names = TRUE)
+
+obcine.regije$obcina[obcine.regije$obcina == "Ankaran/Ancarano"] <- "Ankaran"
+obcine.regije$obcina[obcine.regije$obcina == "Dobrovnik/Dobronak"] <- "Dobrovnik"
+obcine.regije$obcina[obcine.regije$obcina == "Hodoš/Hodos"] <- "Hodoš"
+obcine.regije$obcina[obcine.regije$obcina == "Izola/Isola"] <- "Izola"
+obcine.regije$obcina[obcine.regije$obcina == "Koper/Capodistria"] <- "Koper"
+obcine.regije$obcina[obcine.regije$obcina == "Lendava/Lendva"] <- "Lendava"
+obcine.regije$obcina[obcine.regije$obcina == "Piran/Pirano"] <- "Piran"
+
+prebivalstvo.pripadnost.regijam <- prebivalstvo.obcin %>% 
+  filter(obcina != "SLOVENIJA"
+         ) %>%
+  left_join(obcine.regije, by = "obcina") %>%
+  relocate(obcina, regija, leto, spol, prebivalci)
+
+# utf-8 mi pravilno bere č,š in ž
 
 # IZOBRAZBENA STRUKTURA PREBIVALSTVA
 
@@ -70,6 +91,8 @@ izobrazbena.struktura$OBČINE[izobrazbena.struktura$OBČINE == "Lendava/Lendva"]
 izobrazbena.struktura$OBČINE[izobrazbena.struktura$OBČINE == "Piran/Pirano"] <- "Piran"
 
 izobrazbena.struktura <- izobrazbena.struktura %>%
+  filter(OBČINE != "SLOVENIJA"
+         ) %>%
   pivot_longer(
     cols = colnames(izobrazbena.struktura)[-c(1,2)],
     names_to = "leto.izobrazba",
@@ -89,20 +112,16 @@ izobrazbena.struktura <- izobrazbena.struktura %>%
 # TABELA 1: STRUKTURA PREBIVALSTVA GLEDE NA STOPNJO IZOBRAZBE PO OBČINAH
 
 struktura.prebivalstva <- izobrazbena.struktura %>%
-  left_join(prebivalstvo.obcin, by = c("obcina", "leto", "spol")
+  left_join(prebivalstvo.pripadnost.regijam, by = c("obcina", "leto", "spol")
             ) %>% 
   mutate(odstotek = round((stevilo / prebivalci)*100, 2)
          )%>%
   group_by(obcina) %>%
-  arrange(obcina, .by_group = TRUE)
+  arrange(obcina, .by_group = TRUE) %>%
+  relocate(obcina, regija, leto, spol, izobrazba, stevilo, prebivalci, odstotek) %>%
+  write_csv("podatki/struktura-prebivalstva.csv")
 
-# poskus.pretvorbe <- pivot_wider(izobrazbena.struktura, names_from = "izobrazba", values_from = "stevilo")
-# 
-# prebivalstvo.izobrazba.struktura <- poskus.pretvorbe %>%
-#   left_join(prebivalstvo.obcin, by = c("obcina", "leto", "spol")) 
-
-
-# ŠTEVILO ŠTUDENTK NA 100 ŠTUDENTOV
+  # ŠTEVILO ŠTUDENTK NA 100 ŠTUDENTOV
 
 studentke.na.100.studentov <- read_csv2("podatki/stevilo_studentk_na_100_studentov.csv", skip = 2, na="-",
                                         locale=locale(encoding="Windows-1250"), col_names = TRUE)
@@ -126,6 +145,8 @@ studentke.na.100.studentov[9] = as.double(unlist(studentke.na.100.studentov[9]))
 studentke.na.100.studentov[10] = as.double(unlist(studentke.na.100.studentov[10]))
 
 studentke.na.100.studentov <- studentke.na.100.studentov %>% 
+  filter(OBČINE != "SLOVENIJA"
+  ) %>%
   pivot_longer(
     cols = colnames(studentke.na.100.studentov)[-1],
     names_to = "leto.mera",
@@ -139,6 +160,21 @@ studentke.na.100.studentov <- studentke.na.100.studentov %>%
   rename("obcina" = "OBČINE"
          ) %>%
   select("obcina", "leto", "stevilo.studentk")
+
+studentke.na.100.studentov <- studentke.na.100.studentov %>%
+  left_join(obcine.regije, by = "obcina"
+            ) %>%
+  mutate(obcine = casefold(obcina, upper = TRUE), .keep = "unused"
+         ) %>%
+  relocate(obcina = obcine, regija, leto, stevilo.studentk)
+
+# osilnica_zenske <- struktura.prebivalstva %>%
+#   filter(obcina == "Osilnica", leto == "2019", izobrazba == " Višješolska, visokošolska - Skupaj", spol == "Ženske")
+# osilnica_moski <- struktura.prebivalstva %>%
+#   filter(obcina == "Osilnica", leto == "2019", izobrazba == " Višješolska, visokošolska - Skupaj", spol == "Moški")
+# 
+# studentke.na.100.studentov$stevilo.studentk[studentke.na.100.studentov$obcina == "Osilnica" & studentke.na.100.studentov$leto == "2019"] <- (osilnica_zenske$stevilo / 
+#   osilnica_moski$stevilo) * 100
 
 # RAZLIKA V PLAČI MED SPOLOMA
 
@@ -156,18 +192,26 @@ placna.vrzel$OBČINE[placna.vrzel$OBČINE == "Piran/Pirano"] <- "Piran"
 names(placna.vrzel)[10] <- 2020
 
 placna.vrzel <- placna.vrzel %>%
+  filter(OBČINE != "SLOVENIJA"
+  ) %>%
   pivot_longer(
     cols = colnames(placna.vrzel)[-1],
     names_to = "leto",
     values_to = "stopnja.razlike"
   ) %>%
-  relocate(obcina = OBČINE, leto, stopnja.razlike)
+  mutate(obcine = casefold(OBČINE, upper = TRUE), .keep = "unused"
+  ) %>%
+  relocate(obcina = obcine, leto, stopnja.razlike)
 
 
-# TABELA 3: PRIMERJAVA ŠTEVILA ŠTUDENTK IN ŠTUDENTOV TER PLAČNE VRZELI MED SPOLOMA
+# TABELA 2: PRIMERJAVA ŠTEVILA ŠTUDENTK IN ŠTUDENTOV TER PLAČNE VRZELI MED SPOLOMA
 
 place.in.studentke <- studentke.na.100.studentov %>%
-  left_join(placna.vrzel, by = c("obcina", "leto")) 
+  left_join(placna.vrzel, by = c("obcina", "leto")
+            ) %>%
+  relocate(obcina, regija, leto, stevilo.studentk, stopnja.razlike
+           ) %>%
+  write_csv("podatki/place-in-studentke.csv")
 
 # PLAČE
 
@@ -197,6 +241,8 @@ names(povprecna.mesecna.placa)[8] <- "neto 2019"
 names(povprecna.mesecna.placa)[9] <- "neto 2020"
 
 povprecna.mesecna.placa <- povprecna.mesecna.placa %>%
+  filter(OBČINE != "SLOVENIJA"
+         )%>%
   pivot_longer(
     cols = colnames(povprecna.mesecna.placa)[-1],
     names_to = "vrsta.place.leto",
@@ -208,13 +254,16 @@ povprecna.mesecna.placa <- povprecna.mesecna.placa %>%
     regex = "^(.*)\\s+(\\d{4})$"
   ) %>%
   relocate(obcina = OBČINE, leto, vrsta.place, povprecna.placa
-           ) %>%
-  filter(obcina != "SLOVENIJA")
+           ) 
 
 povprecna.mesecna.placa.velike.crke <- povprecna.mesecna.placa %>%
-  mutate(obcine = casefold(obcina, upper = TRUE), .keep = "unused") %>%
-  relocate(obcina = obcine, leto, vrsta.place, povprecna.placa)
-
+  left_join(obcine.regije, by = "obcina"
+            )%>%
+  mutate(obcine = casefold(obcina, upper = TRUE), .keep = "unused"
+         ) %>%
+  relocate(obcina = obcine, regija, leto, vrsta.place, povprecna.placa
+           ) 
+  
 # BREZPOSELNOST
 
 brezposelnost.17 <- read_xls("podatki/2017_BP_obcine_ravni_izobrazbe.xls", skip = 2)
@@ -281,9 +330,6 @@ brezposelnost.20 <- brezposelnost.20 %>%
   relocate(obcina = Občina, leto, stopnja.izobrazbe, stevilo.brezposelnih) %>%
   pivot_wider(names_from = "leto", values_from = stevilo.brezposelnih, values_fn = list(stevilo.brezposelnih = mean))
 
-
-# TABELA 3: BREZPOSELNOST GLEDE NA STOPNJO IZOBRAZBE PO OBČINAH
-
 brezposelnost.glede.na.stopnjo.izobrazbe <- brezposelnost.17 %>%
   left_join(brezposelnost.18, by = c("obcina", "stopnja.izobrazbe")
              ) %>%
@@ -299,8 +345,23 @@ brezposelnost <- brezposelnost.glede.na.stopnjo.izobrazbe %>%
      )  %>%
   relocate(obcina, leto, stopnja.izobrazbe, stevilo.brezposelnih)
 
+brezposelnost$obcina[brezposelnost$obcina == "DOBROVA-POLHOV GRADEC"] = "DOBROVA - POLHOV GRADEC"
+brezposelnost$obcina[brezposelnost$obcina == "GORENJA VAS-POLJANE"] = "GORENJA VAS - POLJANE"
+brezposelnost$obcina[brezposelnost$obcina == "HOČE-SLIVNICA"] = "HOČE - SLIVNICA"
+brezposelnost$obcina[brezposelnost$obcina == "HRPELJE-KOZINA"] = "HRPELJE - KOZINA"
+brezposelnost$obcina[brezposelnost$obcina == "MIREN-KOSTANJEVICA"] = "MIREN - KOSTANJEVICA"
+brezposelnost$obcina[brezposelnost$obcina == "MOKRONOG-TREBELNO"] = "MOKRONOG - TREBELNO"
+brezposelnost$obcina[brezposelnost$obcina == "RAČE-FRAM"] = "RAČE - FRAM"
+brezposelnost$obcina[brezposelnost$obcina == "RENČE-VOGRSKO"] = "RENČE - VOGRSKO"
+brezposelnost$obcina[brezposelnost$obcina == "ŠEMPETER-VRTOJBA"] = "ŠEMPETER - VRTOJBA"
+brezposelnost$obcina[brezposelnost$obcina == "SVETA TROJICA V SLOVENSKIH GORICAH"] = "SVETA TROJICA V SLOV. GORICAH"
+
+
 # TABELA 3:  POVPREČNE PLAČE V SLOVENSKIH OBČINAH IN BREZPOSELNOST
 
 placa.in.brezposelnost.po.obcinah <- brezposelnost %>%
-  left_join(povprecna.mesecna.placa.velike.crke, by = c("obcina", "leto"))
-
+  left_join(povprecna.mesecna.placa.velike.crke, by = c("obcina", "leto")
+            ) %>%
+  relocate(obcina, regija, leto, stopnja.izobrazbe, stevilo.brezposelnih, vrsta.place, povprecna.placa
+           ) %>%
+  write_csv("podatki/placa-in-brezposlenost-po-obcinah.csv")
