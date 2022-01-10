@@ -6559,26 +6559,46 @@ SVETI JURIJ OB ŠČAVNICI,Pomurska,2019,Skupaj,145,bruto,1528.17
 SVETI JURIJ OB ŠČAVNICI,Pomurska,2019,Skupaj,145,neto,1013.2
 SVETI JURIJ OB ŠČAVNICI,Pomurska,2020,Skupaj,128,bruto,1637.61
 SVETI JURIJ OB ŠČAVNICI,Pomurska,2020,Skupaj,128,neto,1090.36
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2017,OŠ ali manj,22,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2018,OŠ ali manj,13,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2019,OŠ ali manj,13,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2020,OŠ ali manj,12,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2017,srednje poklicno izobraževanje,23,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2018,srednje poklicno izobraževanje,13,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2019,srednje poklicno izobraževanje,11,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2020,srednje poklicno izobraževanje,15,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2017,"strokovno, splošno izobraževanje",20,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2018,"strokovno, splošno izobraževanje",13,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2019,"strokovno, splošno izobraževanje",14,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2020,"strokovno, splošno izobraževanje",14,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2017,"izobraževanje prve, druge, tretje stopnje",14,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2018,"izobraževanje prve, druge, tretje stopnje",10,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2019,"izobraževanje prve, druge, tretje stopnje",10,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2020,"izobraževanje prve, druge, tretje stopnje",8,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2017,Skupaj,79,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2018,Skupaj,49,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2019,Skupaj,48,NA,NA
-SVETI JURIJ V SLOVENSKIH GORICAH,NA,2020,Skupaj,49,NA,NA
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,OŠ ali manj,22,bruto,1520
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,OŠ ali manj,22,neto,1012.1
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,OŠ ali manj,13,bruto,1517.18
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,OŠ ali manj,13,neto,1008.64
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,OŠ ali manj,13,bruto,1618.46
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,OŠ ali manj,13,neto,1062.82
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,OŠ ali manj,12,bruto,1622.87
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,OŠ ali manj,12,neto,1078.93
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,srednje poklicno izobraževanje,23,bruto,1520
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,srednje poklicno izobraževanje,23,neto,1012.1
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,srednje poklicno izobraževanje,13,bruto,1517.18
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,srednje poklicno izobraževanje,13,neto,1008.64
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,srednje poklicno izobraževanje,11,bruto,1618.46
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,srednje poklicno izobraževanje,11,neto,1062.82
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,srednje poklicno izobraževanje,15,bruto,1622.87
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,srednje poklicno izobraževanje,15,neto,1078.93
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,"strokovno, splošno izobraževanje",20,bruto,1520
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,"strokovno, splošno izobraževanje",20,neto,1012.1
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,"strokovno, splošno izobraževanje",13,bruto,1517.18
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,"strokovno, splošno izobraževanje",13,neto,1008.64
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,"strokovno, splošno izobraževanje",14,bruto,1618.46
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,"strokovno, splošno izobraževanje",14,neto,1062.82
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,"strokovno, splošno izobraževanje",14,bruto,1622.87
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,"strokovno, splošno izobraževanje",14,neto,1078.93
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,"izobraževanje prve, druge, tretje stopnje",14,bruto,1520
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,"izobraževanje prve, druge, tretje stopnje",14,neto,1012.1
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,"izobraževanje prve, druge, tretje stopnje",10,bruto,1517.18
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,"izobraževanje prve, druge, tretje stopnje",10,neto,1008.64
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,"izobraževanje prve, druge, tretje stopnje",10,bruto,1618.46
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,"izobraževanje prve, druge, tretje stopnje",10,neto,1062.82
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,"izobraževanje prve, druge, tretje stopnje",8,bruto,1622.87
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,"izobraževanje prve, druge, tretje stopnje",8,neto,1078.93
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,Skupaj,79,bruto,1520
+SVETI JURIJ V SLOV. GORICAH,Podravska,2017,Skupaj,79,neto,1012.1
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,Skupaj,49,bruto,1517.18
+SVETI JURIJ V SLOV. GORICAH,Podravska,2018,Skupaj,49,neto,1008.64
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,Skupaj,48,bruto,1618.46
+SVETI JURIJ V SLOV. GORICAH,Podravska,2019,Skupaj,48,neto,1062.82
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,Skupaj,49,bruto,1622.87
+SVETI JURIJ V SLOV. GORICAH,Podravska,2020,Skupaj,49,neto,1078.93
 SVETI TOMAŽ,Podravska,2017,OŠ ali manj,27,bruto,1439.38
 SVETI TOMAŽ,Podravska,2017,OŠ ali manj,27,neto,967.83
 SVETI TOMAŽ,Podravska,2018,OŠ ali manj,20,bruto,1450.93

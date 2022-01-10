@@ -42,7 +42,7 @@ prebivalstvo.obcin.polletno <- prebivalstvo.obcin.polletno %>%
      )%>%
   rename("obcina" = "OBČINE", "spol" = "SPOL"
          ) %>%
-  select("spol", "obcina", "polletje", "stevilo"
+  dplyr::select("spol", "obcina", "polletje", "stevilo"
          ) %>%
   relocate(obcina, polletje, spol, stevilo) 
 
@@ -159,7 +159,7 @@ studentke.na.100.studentov <- studentke.na.100.studentov %>%
   ) %>%
   rename("obcina" = "OBČINE"
          ) %>%
-  select("obcina", "leto", "stevilo.studentk")
+  dplyr::select("obcina", "leto", "stevilo.studentk")
 
 studentke.na.100.studentov <- studentke.na.100.studentov %>%
   left_join(obcine.regije, by = "obcina"
@@ -355,6 +355,7 @@ brezposelnost$obcina[brezposelnost$obcina == "RAČE-FRAM"] = "RAČE - FRAM"
 brezposelnost$obcina[brezposelnost$obcina == "RENČE-VOGRSKO"] = "RENČE - VOGRSKO"
 brezposelnost$obcina[brezposelnost$obcina == "ŠEMPETER-VRTOJBA"] = "ŠEMPETER - VRTOJBA"
 brezposelnost$obcina[brezposelnost$obcina == "SVETA TROJICA V SLOVENSKIH GORICAH"] = "SVETA TROJICA V SLOV. GORICAH"
+brezposelnost$obcina[brezposelnost$obcina == "SVETI JURIJ V SLOVENSKIH GORICAH"] = "SVETI JURIJ V SLOV. GORICAH"
 
 
 # TABELA 3:  POVPREČNE PLAČE V SLOVENSKIH OBČINAH IN BREZPOSELNOST

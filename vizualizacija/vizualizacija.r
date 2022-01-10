@@ -13,7 +13,8 @@ library(tmap)
 
 # ANALIZA PO STATISTIČNIH REGIJAH
 
-# GRAF 1: Delež visokoizobraženih po statističnih regijah,ločeno po spolu
+
+# GRAF 1: Delež visokoizobraženih po statističnih regijah,ločeno po spolu za leto 2020
 
 visokoizobrazeni.regije <- struktura.prebivalstva %>%
   filter(leto == "2020", izobrazba == " Višješolska, visokošolska - Skupaj"
@@ -23,11 +24,13 @@ visokoizobrazeni.regije <- struktura.prebivalstva %>%
 
 graf1 <- ggplot(visokoizobrazeni.regije) + 
   aes(x = spol, y = delez.visoko.izobrazenih, fill = spol) + geom_col(position = "dodge")+
-  xlab("Spol")+ ylab("Delež visoko izobraženih")+ggtitle("Delež visokoizobraženih po statističnih regijah") + 
+  xlab("Spol")+ ylab("Delež visoko izobraženih") +
+  ggtitle("Delež visokoizobraženih po statističnih regijah za leto 2020") + 
   scale_fill_manual(values = c("lightskyblue", "hotpink")) + facet_wrap(.~regija)
 graf1
 
-# GRAF 2: Delež brezposelnih po statističnih regijah
+
+# GRAF 2: Delež brezposelnih po statističnih regijah za leto 2020
 
 stevilo.prebivalcev.regije <- prebivalstvo.pripadnost.regijam %>%
   filter(leto == "2020") %>%
@@ -47,18 +50,15 @@ prebivalstvo.in.brezposelni.po.regijah <- stevilo.prebivalcev.regije %>%
 graf2 <- ggplot(prebivalstvo.in.brezposelni.po.regijah) + 
   aes(x = regija, y = delez.brezposelnih) + geom_bar(stat = "identity", fill = "lightblue")+
   xlab("Regija")+ ylab("Delež brezposelnih") + 
-  ggtitle("Delež brezposelnih po statističnih regijah")+
+  ggtitle("Delež brezposelnih po statističnih regijah za leto 2020")+
   theme(
     axis.text.x = element_text(angle = 45, vjust = 0.5),
     axis.title.x = element_text(vjust = 0)
   )
 graf2
 
-# ne vem ali je ok, ker naredim kar po statističnih regijah in 
-# vzamem povprečje občin, ampak težava je, da se podatki ne ujemajo ravno, saj 
-# predvidevam da so nekatere obcine majhne prispevajo pa enako v tem povprecju
 
-# GRAF 3: Porazdelitev plač po statističnih regijah
+# GRAF 3: Porazdelitev plač po statističnih regijah za leto 2020
 
 povprecna.slovenska.placa.tabela.2020 <- placa.in.brezposelnost.po.obcinah %>% group_by(obcina) %>%
   filter(leto == "2020", vrsta.place == "neto", stopnja.izobrazbe == "Skupaj")
@@ -74,19 +74,20 @@ izracun.povprecne.place <- function(x){
   return(placa)
 } 
 
-
 graf3 <- ggplot(povprecna.slovenska.placa.tabela.2020) +
   aes(x = regija , y = povprecna.placa) +
   theme(
     axis.text.x = element_text(angle = 45, vjust = 0.5),
     axis.title.x = element_text(vjust = 0)
   ) +
-    geom_boxplot() + ggtitle("Porazdelitev plač po statističnih regijah")
+    geom_boxplot() + ggtitle("Porazdelitev plač po statističnih regijah za leto 2020")
 graf3
+
 
 # ANALIZA PO OBČINAH
 
-# GRAF 4: Občine po številu študentk in plačni vrzeli
+
+# GRAF 4: Občine po številu študentk in plačni vrzeli za leto 2020
 
 povprecna.slovenska.placa <- round(sum(povprecna.slovenska.placa.tabela.2020$povprecna.placa)
                                    /nrow(povprecna.slovenska.placa.tabela.2020),2)
@@ -101,7 +102,7 @@ podatki.graf.4 <- place.in.studentke %>%
   transform(stopnja.razlike = as.numeric(stopnja.razlike))
 
 podatki.graf.4 <- podatki.graf.4 %>%
-  mutate(povprecna = ifelse(podatki.graf.3$povprecna.placa >= povprecna.slovenska.placa, "nadpovprečna", 
+  mutate(povprecna = ifelse(podatki.graf.4$povprecna.placa >= povprecna.slovenska.placa, "nadpovprečna", 
                                ifelse(podatki.graf.4$povprecna.placa < povprecna.slovenska.placa, "podpovprečna", 0))
          )%>%
   filter(stopnja.razlike > - 3.0 & stopnja.razlike < 3.0) 
@@ -109,20 +110,52 @@ podatki.graf.4 <- podatki.graf.4 %>%
 podatki <- podatki.graf.4 %>%
   filter(stopnja.razlike > - 0.5 & stopnja.razlike < 0.5)
 
-# kako pokazati skalo ?? 
-
 graf4 <- ggplot(podatki.graf.4) + 
   aes(x = stopnja.razlike, y = stevilo.studentk, colour = povprecna ) + 
-  scale_x_discrete(breaks = c("-2.0","-1.0","0.0","1.0","2.0")) + 
   geom_point(size = 1) + 
   geom_text(aes(label = ifelse(stopnja.razlike %in% podatki$stopnja.razlike, as.character(obcina), '')),
                                     hjust = 0, vjust= 0, size = 3) +
   xlab("Stopnja razlike v plači") + ylab("Število študentk na 100 študentov")+
-  ggtitle("Občine po številu študentk in plačni vrzeli") +
-  scale_colour_manual("Plača",values = c("plum", "lightcyan4"), labels = c("nadpovprečna", "podpovprečna"))
+  ggtitle("Občine po številu študentk in plačni vrzeli za leto 2020") +
+  scale_colour_manual("Plača", values = c("plum", "lightcyan4"), labels = c("nadpovprečna", "podpovprečna")) 
 graf4
+ 
 
+# "Rmd"
+# 3 graf shraniš plus v r okolje kličeš graf po imenu, tukaj ga ne smeš klicat
+# echo je false- ta blok se ne izpiše, $$ ZA IZPIS, 'r spremenljivka' se v kodi izpiše
 
 ########################################## ZEMLJEVIDI #########################################################
 
-# source("https://raw.githubusercontent.com/katarinabrilej/APPR-2021-22/main/lib/uvozi.zemljevid.r")
+
+source("lib/uvozi.zemljevid.r")
+obcine <- uvozi.zemljevid("http://baza.fmf.uni-lj.si/OB.zip", "OB",
+                           pot.zemljevida="OB", encoding="Windows-1250")
+
+tm_shape(obcine) + tm_polygons("OB_UIME") + tm_legend(show=FALSE)
+obcine$OB_UIME <- factor(obcine$OB_UIME)
+
+lvls <- levels(obcine$OB_UIME)
+brezposelnost.zemljevid <- unique(povprecna.slovenska.placa.tabela.2020$obcina) %>% sort()
+
+razlicni <- lvls!= brezposelnost.zemljevid
+
+primerjava <- data.frame(obcina.zemljevid = parse_character(lvls),
+                         obcina.brezposelnost = brezposelnost.zemljevid)[razlicni,]
+
+brezposelnost.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>% 
+  left_join(primerjava, by = c("obcina" = "obcina.brezposelnost")) %>%
+  mutate(obcina = ifelse(is.na(obcina.zemljevid), obcina, obcina.zemljevid) %>% factor()) %>%
+  dplyr::select(-obcina.zemljevid)
+
+obcine.brezposelnost.zemljevid <- merge(obcine, brezposelnost.na.zemljevidu,
+                 by.x = "OB_UIME", by.y = "obcina")
+
+tm_shape(obcine.brezposelnost.zemljevid) + tm_polygons("povprecna.placa")
+tmap_mode("view")
+
+
+# tm_shape(podatki) + tm_polygons("povprecna.placa")
+# tmap_mode("plot")
+
+# obcine@data
