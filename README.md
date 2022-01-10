@@ -19,34 +19,32 @@ Tabele:
 
 1. Tabela 1: Struktura prebivalstva Slovenije po občinah glede na stopnjo izobrazbe od leta 2012 do leta 2020
 
+* `obcina`
+* `regija`
 * `leto`
-* `občina`
-* `stevilo_prebivalcev`
-* `osnovnosolska_ali_manj`
-* `srednjesolska`
-* `visokosolska_1_stopnja`
-* `visokosolska_2_stopnja`
-* `visokosolska_3_stopnja`
-* `visjesolska_visokosolska_skupaj`
+* `spol`
+* `izobrazba`
+* `stevilo`
+* `prebivalci`
+* `odstotek`
 
-2. Tabela 2: Stopnja brezposelnosti glede na stopnjo izobrazbe od leta 2017 do 2020
+2. Tabela 2: Primerjava višine plač po občinah ter razlike v plači med moškimi in ženskami od leta 2012 do 2020
 
+* `obcina`
+* `regija`
 * `leto`
-* `občina`
-* `stevilo_prebivalcev`
-* `brezposelnost_osnovnosolska_ali_manj`
-* `brezposelnost_srednjesolska`
-* `brezposelnost_visjesolska_visokosolska_skupaj`
-* `brezposelnost_skupaj`
+* `stevilo.studentk`
+* `stopnja.razlike`
 
-3. Tabela 3: Primerjava višine plač po občinah ter razlike v plači med moškimi in ženskami od leta 2012 do 2020
+3. Tabela 3: Povprečne plače in stopnja brezposelnosti glede na stopnjo izobrazbe po občinah od leta 2017 do 2020
 
+* `obcina`
+* `regija`
 * `leto`
-* `občina`
-* `stevilo_studentk_na_100_studentov`
-* `povprecna_neto_placa`
-* `povprecna_bruto_placa`
-* `razlika_v_placi`
+* `stopnja.izobrazbe`
+* `stevilo.brezposelnih`
+* `vrsta.place`
+* `povprecna.placa`
 
 ## Program
 
