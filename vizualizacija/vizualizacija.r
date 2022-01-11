@@ -128,6 +128,8 @@ graf4
 ########################################## ZEMLJEVIDI #########################################################
 
 
+# pri zemljevidih popravi še legendo
+
 source("lib/uvozi.zemljevid.r")
 obcine <- uvozi.zemljevid("http://baza.fmf.uni-lj.si/OB.zip", "OB",
                            pot.zemljevida="OB", encoding="Windows-1250")
@@ -136,26 +138,50 @@ tm_shape(obcine) + tm_polygons("OB_UIME") + tm_legend(show=FALSE)
 obcine$OB_UIME <- factor(obcine$OB_UIME)
 
 lvls <- levels(obcine$OB_UIME)
-brezposelnost.zemljevid <- unique(povprecna.slovenska.placa.tabela.2020$obcina) %>% sort()
+povprecna.placa.zemljevid <- unique(povprecna.slovenska.placa.tabela.2020$obcina) %>% sort()
 
-razlicni <- lvls!= brezposelnost.zemljevid
+razlicni <- lvls!= povprecna.placa.zemljevid
 
 primerjava <- data.frame(obcina.zemljevid = parse_character(lvls),
-                         obcina.brezposelnost = brezposelnost.zemljevid)[razlicni,]
+                         obcina.placa = povprecna.placa.zemljevid)[razlicni,]
 
-brezposelnost.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>% 
-  left_join(primerjava, by = c("obcina" = "obcina.brezposelnost")) %>%
+placa.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>% 
+  left_join(primerjava, by = c("obcina" = "obcina.placa")) %>%
   mutate(obcina = ifelse(is.na(obcina.zemljevid), obcina, obcina.zemljevid) %>% factor()) %>%
   dplyr::select(-obcina.zemljevid)
 
-obcine.brezposelnost.zemljevid <- merge(obcine, brezposelnost.na.zemljevidu,
+obcine.placa.zemljevid <- merge(obcine, placa.na.zemljevidu,
                  by.x = "OB_UIME", by.y = "obcina")
 
-tm_shape(obcine.brezposelnost.zemljevid) + tm_polygons("povprecna.placa")
+tm_shape(obcine.placa.zemljevid) + 
+  tm_polygons("povprecna.placa", popup.vars = c("Višina povprečne plače: " = "povprecna.placa"))
 tmap_mode("view")
 
+prebivalstvo.obcin.2020 <- prebivalstvo.obcin %>% filter(leto == "2020") %>%
+  group_by(obcina) %>% mutate(prebivalstvo = sum(prebivalci)) %>% 
+  filter(spol == "Ženske") %>% dplyr::select(- c("spol", "prebivalci"))
 
-# tm_shape(podatki) + tm_polygons("povprecna.placa")
-# tmap_mode("plot")
+brezposelnost.zemljevid <- unique(prebivalstvo.obcin.2020$obcina) %>% sort()
 
-# obcine@data
+razlicni.elementi <- lvls!= brezposelnost.zemljevid
+
+primerjava.elementi <- data.frame(obcina.zemljevid = parse_character(lvls),
+                         obcina.brezposelnost = brezposelnost.zemljevid)[razlicni,]
+
+brezposelnost.na.zemljevidu <- prebivalstvo.obcin.2020 %>%
+  left_join(primerjava.elementi, by = c("obcina" = "obcina.brezposelnost")) %>%
+  mutate(obcina = ifelse(is.na(obcina.zemljevid), obcina, obcina.zemljevid) %>% factor()) %>%
+  dplyr::select(-obcina.zemljevid) 
+
+brezposelnost.na.zemljevidu <- placa.na.zemljevidu %>%
+  left_join(brezposelnost.na.zemljevidu, by = c("leto", "obcina")) %>%
+  mutate(delez.brezposelnih = round((stevilo.brezposelnih / prebivalstvo) * 100, 2))
+
+
+obcine.brezposelnost.zemljevid <- merge(obcine, brezposelnost.na.zemljevidu,
+                                by.x = "OB_UIME", by.y = "obcina")
+
+tm_shape(obcine.brezposelnost.zemljevid) + 
+  tm_polygons("delez.brezposelnih", popup.vars = c("Delež brezposelnih: " = "delez.brezposelnih"))
+tmap_mode("view")
+

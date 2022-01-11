@@ -1,7 +1,7 @@
 # 2. faza: Uvoz podatkov
 
 
-sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+# sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
 library(readr)
 library(tibble)
@@ -366,3 +366,4 @@ placa.in.brezposelnost.po.obcinah <- brezposelnost %>%
   relocate(obcina, regija, leto, stopnja.izobrazbe, stevilo.brezposelnih, vrsta.place, povprecna.placa
            ) %>%
   write_csv("podatki/placa-in-brezposlenost-po-obcinah.csv")
+
