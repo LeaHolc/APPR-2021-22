@@ -203,7 +203,7 @@ placa.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>%
 obcine.placa.zemljevid <- merge(obcine, placa.na.zemljevidu,
                  by.x = "OB_UIME", by.y = "obcina")
 
-tm_shape(obcine.placa.zemljevid) +
+mapa1 <- tm_shape(obcine.placa.zemljevid) +
   tm_polygons("povprecna.placa", popup.vars = c("Višina povprečne plače: " = "povprecna.placa"))
 tmap_mode("view")
 
