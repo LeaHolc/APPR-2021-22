@@ -7,21 +7,20 @@
 
 # source("lib/libraries.r", encoding="UTF-8")
 
-# placa <- povprecna.mesecna.placa %>% filter(leto == "2020", vrsta.place == "neto")
-# placa$povprecna.placa[placa$obcina == "Osilnica"] <- 714.13
-# 
-# tabela.za.analizo <- struktura.prebivalstva %>% filter(leto == "2020", 
-#                                                        izobrazba == " Višješolska, visokošolska - Skupaj"
-#                                                        ) %>% group_by(obcina
-#                                                                       ) %>% 
-#   summarise(delez.visokoizobrazenih = round((sum(stevilo) / sum(prebivalci))* 100,2))  
-# 
-# 
-# 
-# g <- ggplot(tabela.za.analizo, aes(x=povprecna.placa, y=delez.visokoizobrazenih)) + geom_point()
-# print(g)
-# 
-# g + geom_smooth(method="lm", formula = y ~ x)
+placa <- povprecna.mesecna.placa %>% filter(leto == "2020", vrsta.place == "neto")
+placa$povprecna.placa[placa$obcina == "Osilnica"] <- 714.13
+ 
+tabela.za.analizo <- struktura.prebivalstva %>% filter(leto == "2020",
+                                                       izobrazba == " Višješolska, visokošolska - Skupaj"
+                                                       ) %>% group_by(obcina
+                                                                      ) %>%
+  summarise(delez.visokoizobrazenih = round((sum(stevilo) / sum(prebivalci))* 100,2)) %>%
+  left_join(placa, by = "obcina") %>% dplyr::select(obcina, delez.visokoizobrazenih, povprecna.placa)
+
+g <- ggplot(tabela.za.analizo, aes(x=povprecna.placa, y=delez.visokoizobrazenih)) + geom_point()
+print(g)
+
+g + geom_smooth(method="lm", formula = y ~ x)
 
 
 ###################### METODA VODITELJEV ###############################################################
