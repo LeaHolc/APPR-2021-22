@@ -1,13 +1,15 @@
 # 3. faza: Vizualizacija podatkov
 
-library(tidyverse)
-library(ggplot2)
-library(dplyr)
-library(sp)
-library(rgdal)
-library(rgeos)
-library(raster)
-library(tmap)
+# library(tidyverse)
+# library(ggplot2)
+# library(dplyr)
+# library(sp)
+# library(rgdal)
+# library(rgeos)
+# library(raster)
+# library(tmap)
+
+# source("lib/libraries.r", encoding="UTF-8")
 
 ########################################## GRAFIČNA ANALIZA #########################################################
 
@@ -79,8 +81,9 @@ graf3 <- ggplot(povprecna.slovenska.placa.tabela.2020) +
   theme(
     axis.text.x = element_text(angle = 45, vjust = 0.5),
     axis.title.x = element_text(vjust = 0)
-  ) +
-    geom_boxplot() + ggtitle("Porazdelitev plač po statističnih regijah za leto 2020")
+  ) + geom_boxplot() + 
+  xlab("Regija")+ ylab("Povprečna plača") +
+  ggtitle("Porazdelitev plač po statističnih regijah za leto 2020")
 graf3
 
 
@@ -117,18 +120,65 @@ graf4 <- ggplot(podatki.graf.4) +
                                     hjust = 0, vjust= 0, size = 3) +
   xlab("Stopnja razlike v plači") + ylab("Število študentk na 100 študentov")+
   ggtitle("Občine po številu študentk in plačni vrzeli za leto 2020") +
-  scale_colour_manual("Plača", values = c("plum", "lightcyan4"), labels = c("nadpovprečna", "podpovprečna")) 
+  scale_colour_manual("Plača", values = c("maroon", "slateblue1"), labels = c("nadpovprečna", "podpovprečna")) 
 graf4
- 
 
-# "Rmd"
-# 3 graf shraniš plus v r okolje kličeš graf po imenu, tukaj ga ne smeš klicat
-# echo je false- ta blok se ne izpiše, $$ ZA IZPIS, 'r spremenljivka' se v kodi izpiše
+
+# GRAF 5: Gibanje števila visokoizobraženih v občinah z najmanjšo plačno vrzeljo
+
+enake.obcine <- struktura.prebivalstva %>% 
+  mutate(obcine = casefold(obcina, upper = TRUE), .keep = "unused"
+         ) %>%
+  dplyr::select(obcina = obcine, leto, spol, izobrazba, stevilo, odstotek
+                ) %>%
+  filter(obcina %in% podatki$obcina, izobrazba == " Višješolska, visokošolska - Skupaj")
+
+graf5 <- ggplot(enake.obcine) + aes(x = leto, y = odstotek, color = spol) +
+  geom_line() + 
+  scale_color_manual("Spol",
+                     values = c("lightskyblue",  "orchid"),
+                     labels = c("Moški", "Ženske")) +
+  facet_wrap(.~obcina) +
+  xlab("Leto") + ylab("Delež visokoizobraženih") + 
+  ggtitle("Gibanje deleža visokoizobraženih v občinah \n z najmanjšo plačno vrzeljo od leta 2012 do 2020") 
+  
+graf5
+
+
+# GRAF 6: Izobrazbena struktura v občini z najvišjo povprečno plačo za leto 2020
+
+
+podatki.graf.6 <- povprecna.mesecna.placa %>% filter(leto == 2020, vrsta.place == "neto")
+podatki.graf.6$povprecna.placa[podatki.graf.6$obcina == "Osilnica"] <- 714.13
+
+podatki.graf.6 <- podatki.graf.6 %>% 
+  left_join(filter(izobrazbena.struktura, leto == 2020, izobrazba != 
+                     " Višješolska, visokošolska - Skupaj"), by = c("obcina", "leto"))
+  
+
+podatki.graf.6 <- podatki.graf.6 %>%
+  filter(povprecna.placa == max(povprecna.placa)
+         ) %>% group_by(izobrazba) %>%
+  mutate(sestav = sum(stevilo)) %>%
+  filter(spol == "Ženske")
+
+graf6 <- ggplot(podatki.graf.6) +
+  aes(x = "", y = sestav, fill = izobrazba) + geom_col(width = 1) + 
+  scale_fill_manual("Stopnja izobrazbe",
+                    values = c("seagreen1", "lightskyblue", "plum", "greenyellow", "salmon"),
+                    labels = c("Osnovnošolska ali manj", "Srednješolska", "Visokošolska 1. stopnje ipd",
+                               "Visokošolska 2. stopnje ipd", "Visokošolska 3. stopnje ipd")) +
+  coord_polar(theta = "y") +
+  xlab("") + ylab("")  + 
+  theme(axis.text = element_blank(),
+                              axis.ticks = element_blank(),
+                              panel.grid = element_blank()) +
+  ggtitle(paste("Izobrazbena struktura za občino", podatki.graf.6$obcina[1], "v letu 2020", sep = " "))
+graf6
+
 
 ########################################## ZEMLJEVIDI #########################################################
 
-
-# pri zemljevidih popravi še legendo
 
 source("lib/uvozi.zemljevid.r")
 obcine <- uvozi.zemljevid("http://baza.fmf.uni-lj.si/OB.zip", "OB",
@@ -145,7 +195,7 @@ razlicni <- lvls!= povprecna.placa.zemljevid
 primerjava <- data.frame(obcina.zemljevid = parse_character(lvls),
                          obcina.placa = povprecna.placa.zemljevid)[razlicni,]
 
-placa.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>% 
+placa.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>%
   left_join(primerjava, by = c("obcina" = "obcina.placa")) %>%
   mutate(obcina = ifelse(is.na(obcina.zemljevid), obcina, obcina.zemljevid) %>% factor()) %>%
   dplyr::select(-obcina.zemljevid)
@@ -153,12 +203,12 @@ placa.na.zemljevidu <- povprecna.slovenska.placa.tabela.2020 %>%
 obcine.placa.zemljevid <- merge(obcine, placa.na.zemljevidu,
                  by.x = "OB_UIME", by.y = "obcina")
 
-tm_shape(obcine.placa.zemljevid) + 
+tm_shape(obcine.placa.zemljevid) +
   tm_polygons("povprecna.placa", popup.vars = c("Višina povprečne plače: " = "povprecna.placa"))
 tmap_mode("view")
 
 prebivalstvo.obcin.2020 <- prebivalstvo.obcin %>% filter(leto == "2020") %>%
-  group_by(obcina) %>% mutate(prebivalstvo = sum(prebivalci)) %>% 
+   group_by(obcina) %>% mutate(prebivalstvo = sum(prebivalci)) %>%
   filter(spol == "Ženske") %>% dplyr::select(- c("spol", "prebivalci"))
 
 brezposelnost.zemljevid <- unique(prebivalstvo.obcin.2020$obcina) %>% sort()
@@ -169,19 +219,19 @@ primerjava.elementi <- data.frame(obcina.zemljevid = parse_character(lvls),
                          obcina.brezposelnost = brezposelnost.zemljevid)[razlicni,]
 
 brezposelnost.na.zemljevidu <- prebivalstvo.obcin.2020 %>%
-  left_join(primerjava.elementi, by = c("obcina" = "obcina.brezposelnost")) %>%
-  mutate(obcina = ifelse(is.na(obcina.zemljevid), obcina, obcina.zemljevid) %>% factor()) %>%
-  dplyr::select(-obcina.zemljevid) 
+  left_join(primerjava.elementi, by = c("obcina" = "obcina.brezposelnost"))  %>%
+   mutate(obcina = ifelse(is.na(obcina.zemljevid), obcina, obcina.zemljevid) %>% factor()) %>%
+   dplyr::select(-obcina.zemljevid)
 
 brezposelnost.na.zemljevidu <- placa.na.zemljevidu %>%
   left_join(brezposelnost.na.zemljevidu, by = c("leto", "obcina")) %>%
-  mutate(delez.brezposelnih = round((stevilo.brezposelnih / prebivalstvo) * 100, 2))
+  mutate(Brezposelni = round((stevilo.brezposelnih / prebivalstvo) * 100, 2))
 
 
 obcine.brezposelnost.zemljevid <- merge(obcine, brezposelnost.na.zemljevidu,
                                 by.x = "OB_UIME", by.y = "obcina")
 
-tm_shape(obcine.brezposelnost.zemljevid) + 
-  tm_polygons("delez.brezposelnih", popup.vars = c("Delež brezposelnih: " = "delez.brezposelnih"))
+tm_shape(obcine.brezposelnost.zemljevid) +
+  tm_polygons("Brezposelni", popup.vars = c("Delež brezposelnih: " = "Brezposelni"))
 tmap_mode("view")
 

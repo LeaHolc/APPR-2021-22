@@ -3,12 +3,14 @@
 
 # sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
-library(readr)
-library(tibble)
-library(tidyr)
-library(dplyr)
-library(readxl)
-library(tidyverse)
+# library(readr)
+# library(tibble)
+# library(tidyr)
+# library(dplyr)
+# library(readxl)
+# library(tidyverse)
+
+# source("lib/libraries.r", encoding="UTF-8")
 
 # PREBIVALSTVO
 
@@ -16,7 +18,7 @@ prebivalstvo.obcin.polletno <- read_csv2("podatki/prebivalstvo_po_spolu_obcine_p
                                locale=locale(encoding="Windows-1250"), col_names = TRUE, 
                                col_types = cols(
                                  .default = col_guess(),
-                                 SPOL = col_factor()
+                                 #SPOL = col_factor()
                                ))
 
 prebivalstvo.obcin.polletno$OBČINE[prebivalstvo.obcin.polletno$OBČINE == "Ankaran/Ancarano"] <- "Ankaran"
@@ -120,6 +122,8 @@ struktura.prebivalstva <- izobrazbena.struktura %>%
   arrange(obcina, .by_group = TRUE) %>%
   relocate(obcina, regija, leto, spol, izobrazba, stevilo, prebivalci, odstotek) %>%
   write_csv("podatki/struktura-prebivalstva.csv")
+
+struktura.prebivalstva[["leto"]] <- parse_number(struktura.prebivalstva[["leto"]], na = "")
 
   # ŠTEVILO ŠTUDENTK NA 100 ŠTUDENTOV
 
