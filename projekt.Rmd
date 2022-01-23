@@ -31,11 +31,13 @@ Kot vir podatkov bom uporabila naslednje spletne strani:
 * [spletna stran SURS](https://pxweb.stat.si/SiStat/sl)
 * [spletna stran ZRSZ](https://www.ess.gov.si/trg_dela/trg_dela_v_stevilkah/registrirana_brezposelnost#Ob%C4%8Dine)
 
+
 ## Obdelava, uvoz in čiščenje podatkov
 
 ```{r uvoz}
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
+
 
 Podatke bom uvozila v obliki CSV in Excel datotek.
 
@@ -50,6 +52,7 @@ Podatke bom uvozila v obliki CSV in Excel datotek.
 * `prebivalci` - meritev: število prebivalcev občine
 * `odstotek` - meritev: delež prebivalcev z določeno stopnjo izobrazbe
 
+
 2. Tabela 2: Primerjava razlike plač med moškimi in ženskami po občinah (2012 - 2020)
 
 * `obcina`- spremenljivka: ime občine
@@ -57,6 +60,7 @@ Podatke bom uvozila v obliki CSV in Excel datotek.
 * `leto` - spremenljivka: leto meritve (število)
 * `stevilo.studentk` - meritev: število študentk na 100 študentov
 * `stopnja.razlike` - meritev:  razlika med povprečno bruto plačo moških na uro in povprečno bruto plačo žensk na uro kot delež povprečne bruto plače moških na uro
+
 
 3. Tabela 3: Povprečne plače in stopnja brezposelnosti glede na stopnjo izobrazbe po občinah (2017 - 2020)
 
@@ -68,22 +72,27 @@ Podatke bom uvozila v obliki CSV in Excel datotek.
 * `vrsta.place` - spremenljivka: bruto ali neto plača
 * `povprecna.placa` - meritev: povprečna plača v posamezni občini
 
+
 ## Analiza in vizualizacija podatkov
 
 ```{r vizualizacija, results='hide'}
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
+
 ### ANALIZA PO STATISTIČNIH REGIJAH
 
 V prvem delu analize bom podatke, ki so sicer pridobljeni na ravni občin, zaradi lažje grafične predstavitve združila po statističnih regijah. Pri analizi se bom osredotočila na leto 2020, ki je hkrati tudi zadnje leto v naboru podatkov.
+
 
 ```{r graf1, echo=FALSE, fig.align='center'}
 graf1
 ```
 
+
 Prvi graf prikazuje delež visokoizobraženih po statističnih regijah, ločeno po spolu za leto 2020. Opazimo, da je odstotek visokoizobraženih žensk prav v vseh statističnih regijah višji od odstotka visokoizobraženih moških.
 Največji razkorak med spoloma je v Osrednjeslovenski regiji regiji, kjer ta znaša 8,08%. V Osrednjeslovenski regiji je tudi sam delež visokoizobraženih najvišji in pri ženskah presega 30% ženske populacije v regiji.
+
 
 ```{r graf2, echo=FALSE, fig.align='center'}
 graf2
@@ -92,40 +101,53 @@ graf2
 Drugi graf prikazuje delež brezposelnih po statističnih regijah v letu 2020. Izrazito najvišji delež opazimo v Pomurski regiji, kjer znaša blizu 6% celotne populacije v občini. V povezavi s prvim grafom tako opazimo, da je v Pomurski regiji tudi najnižja stopnja visokoizobraženih, tako med moškimi, kot tudi med ženskami. 
 Na drugi strani pa najnižjo stopnjo brezposelnosti beležita Goriška in Gorenjska statistična regija, kjer pa je tudi delež visokoizobraženih med višjimi v Sloveniji.
 
+
 ```{r graf3, echo=FALSE, fig.align='center'}
 graf3
 ```
 
+
 V tretjem grafu sem se osredotočila še na anlizo plač po statističnih regijah. Na tem mestu bi opozorila na manjšo nepravilnost, ki se je pojavila zaradi združevanja podatkov brez uteževanja. Diagram kvantilov namreč kaže, da je najvišja povprečna plača v Gorenjski statistični regiji, pričakovali pa bi, da bi bila ta najvišja v osrednjeslovenski, glede na število visokoizobraženih prebivalcev. Naj obrazložim: podatki o povprečnih plačah so pridobljeni na ravni občin, torej vsaka občina ima enolično določeno višino povprečne plače. Skupna porazdelitev, ki jo naredi diagram kvantilov tako ne upošteva števila občin v posamezni statistični regiji, niti števila prebivalcev, zato prihaja do odstopanja. Vseeno pa lahko opazimo, da imajo statistične regije z najnižjim deležem visokoizobraženih in najvišjo stopnjo brezposelnosti, torej Podravska in Pomurska regija, tudi nižjo povprečno plačo.
+
 
 ### ANALIZA PO OBČINAH
 
 V drugem delu analize sem se osredotočila na analizo zdaj že znanih parametrov - plača, brezposelnost in stopnja izobrazbe, še na občinski ravni. In sicer bom število občin, ki jih bom analizirala skrčila glede na optimalno razmerje med višino plače, plačno neenakostjo med spoloma in številom brezposelnih.
 
+
+
 ```{r graf4, echo=FALSE, fig.align='center'}
 graf4
 ```
+
 
 V četrtem grafu sem želela z razsevnim diagramom prikazati slovenske občine glede na stopnjo razlike v plači in številom študentk na 100 študentov. Indeks, ki prikazuje plačno vrzel med spoloma v posamezni občini, je izračunan kot razlika med povprečno bruto plačo za plačano uro moških in povprečno bruto plačo za plačano uro žensk kot delež povprečne bruto plače za plačano uro moških. Pozitivna vrednost tako pomeni višjo plačo moških, negativna pa višjo plačo žensk. Glede na podatke o številu visokoizobraženih žensk in številom študentk na 100 študentov, kjer opazimo izrazito višje deleže žensk, bi pričakovali, da imajo ženske višjo ali vsaj enako povprečno plačo kot moški. Torej, da se indeks giblje okoli ali malo pod ničlo. Pa temu ni tako. V razsevnem diagramu, ki sem ga zaradi prevelikega razpona indeksa (ta se giblje med -11.0 in 12.0) morala omejiti na prikaz občin z indeksom med -3.0 in 3.0, opazimo, da se izrazito več slovenskih občin nahaja na pozitivni strani, kjer imajo moški v povprečju višje plače. Število študentk na 100 študentov pa je skoraj pri vseh občinah nad 100. Pikice, ki prikazujejo posamezne občine sem obarvala glede na višino povprečne plače in sicer rdeče obarvane so občine z nadpovprečno plačo, modro pa so obarvane občine s podpovprečno plačo.
 
 Osredotočila pa sem se na občine, ki imajo plačno vrzel med -0.5 in 0.5 in imajo najvišjo plačno enakost. S tega vidika bi tako za optimalno lahko označili občino Nazarje, ki ima indeks blizu 0, število študentk približno enako številu študentov, plača pa je nad slovenskim povprečjem.
 
 
+
 ```{r graf5, echo=FALSE, fig.align='center'}
 graf5
 ```
 
+
 V tem delu analize sem za občine, ki sem jim glede na kriterij plačne enakosti izločila pri razsevnem diagramu po zgoraj opisanem postopku, narisala še gibanje deleža visokoizobraženih od leta 2012 do 2020. Opazimo, da delež skozi leta v vseh občinah raste in da se v večini primerov tako delež moških kot delež žensk sorazmerno povečujeta. 
+
 
 ```{r graf6, echo=FALSE, fig.align='center'}
 graf6
 ```
 
+
 V zadnjem grafu pa sem se odločila analizirati še izobrazbeno strukturo v občini z najvišjo povprečno plačo. V letu 2020 je bila to občina Podhlenik, s tortnim diagramom pa je prikazana izobrazbena struktura te občine. Najvišji delež predstavlja prebivalstvo z zaključeno srednješolsko izobrazbo, nato sledijo tisti z osnovnošolsko izobrazbo ali manj, malo manj kot četrtina prebivalstva pa ima zaključeno visokošolsko izobrazbo.
 
-```{r echo=FALSE, fig.align='center'}
+
+
+```{r mapa1, echo=FALSE, fig.align='center'}
 print(mapa1)
 ```
+
 
 ## Napredna analiza podatkov
 
@@ -135,8 +157,12 @@ source("analiza/analiza.r", encoding="UTF-8")
 
 ***
 
+Spodnji interaktivni prikaz nam omogoča, da izberemo slovensko občino in opazujemo gibanje števila brezposelnih po letih glede na izbrano stopnjo izobrazbe.
+
+
+
 ```{r shiny}
-#shinyAppDir("shiny", options=list(width="100%", height=600))
+shinyAppDir("shiny", options=list(width="100%", height=600))
 ```
 
 

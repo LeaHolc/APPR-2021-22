@@ -206,6 +206,7 @@ obcine.placa.zemljevid <- merge(obcine, placa.na.zemljevidu,
 mapa1 <- tm_shape(obcine.placa.zemljevid) +
   tm_polygons("povprecna.placa", popup.vars = c("Višina povprečne plače: " = "povprecna.placa"))
 tmap_mode("view")
+mapa1
 
 prebivalstvo.obcin.2020 <- prebivalstvo.obcin %>% filter(leto == "2020") %>%
    group_by(obcina) %>% mutate(prebivalstvo = sum(prebivalci)) %>%
@@ -235,3 +236,15 @@ tm_shape(obcine.brezposelnost.zemljevid) +
   tm_polygons("Brezposelni", popup.vars = c("Delež brezposelnih: " = "Brezposelni"))
 tmap_mode("view")
 
+
+
+
+# graf = ggplot(brezposelnost %>% filter(obcina == "LJUBLJANA", stopnja.izobrazbe == "OŠ ali manj")) +
+#   aes(x = leto, y = stevilo.brezposelnih) +
+#   geom_col(position = "dodge", fill = "lightblue") +
+#   labs(
+#     x = "leto",
+#     y = "število brezposelnih",
+#     title = "obcina.vnos"
+#   )
+# print(graf)

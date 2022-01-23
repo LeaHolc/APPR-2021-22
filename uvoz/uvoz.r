@@ -361,6 +361,8 @@ brezposelnost$obcina[brezposelnost$obcina == "ŠEMPETER-VRTOJBA"] = "ŠEMPETER -
 brezposelnost$obcina[brezposelnost$obcina == "SVETA TROJICA V SLOVENSKIH GORICAH"] = "SVETA TROJICA V SLOV. GORICAH"
 brezposelnost$obcina[brezposelnost$obcina == "SVETI JURIJ V SLOVENSKIH GORICAH"] = "SVETI JURIJ V SLOV. GORICAH"
 
+brezposelnost.shiny <- brezposelnost %>%
+  filter(leto == "2020", stopnja.izobrazbe == "Skupaj")
 
 # TABELA 3:  POVPREČNE PLAČE V SLOVENSKIH OBČINAH IN BREZPOSELNOST
 
