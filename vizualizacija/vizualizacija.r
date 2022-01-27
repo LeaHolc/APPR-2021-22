@@ -135,6 +135,10 @@ enake.obcine <- struktura.prebivalstva %>%
 
 graf5 <- ggplot(enake.obcine) + aes(x = leto, y = odstotek, color = spol) +
   geom_line() + 
+  theme(
+    axis.text.x = element_text(angle = 45, vjust = 0.5),
+    axis.title.x = element_text(vjust = 0)
+  ) +
   scale_color_manual("Spol",
                      values = c("lightskyblue",  "orchid"),
                      labels = c("Moški", "Ženske")) +
@@ -206,7 +210,7 @@ obcine.placa.zemljevid <- merge(obcine, placa.na.zemljevidu,
 mapa1 <- tm_shape(obcine.placa.zemljevid) +
   tm_polygons("povprecna.placa", popup.vars = c("Višina povprečne plače: " = "povprecna.placa"))
 tmap_mode("view")
-mapa1
+# mapa1
 
 prebivalstvo.obcin.2020 <- prebivalstvo.obcin %>% filter(leto == "2020") %>%
    group_by(obcina) %>% mutate(prebivalstvo = sum(prebivalci)) %>%
@@ -232,19 +236,8 @@ brezposelnost.na.zemljevidu <- placa.na.zemljevidu %>%
 obcine.brezposelnost.zemljevid <- merge(obcine, brezposelnost.na.zemljevidu,
                                 by.x = "OB_UIME", by.y = "obcina")
 
-tm_shape(obcine.brezposelnost.zemljevid) +
+mapa2 <- tm_shape(obcine.brezposelnost.zemljevid) +
   tm_polygons("Brezposelni", popup.vars = c("Delež brezposelnih: " = "Brezposelni"))
 tmap_mode("view")
 
 
-
-
-# graf = ggplot(brezposelnost %>% filter(obcina == "LJUBLJANA", stopnja.izobrazbe == "OŠ ali manj")) +
-#   aes(x = leto, y = stevilo.brezposelnih) +
-#   geom_col(position = "dodge", fill = "lightblue") +
-#   labs(
-#     x = "leto",
-#     y = "število brezposelnih",
-#     title = "obcina.vnos"
-#   )
-# print(graf)
