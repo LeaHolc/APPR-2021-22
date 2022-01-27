@@ -145,9 +145,13 @@ V zadnjem grafu pa sem se odločila analizirati še izobrazbeno strukturo v obč
 
 
 ```{r mapa1, echo=FALSE, fig.align='center'}
-print(mapa1)
+mapa1
 ```
 
+
+```{r mapa2, echo=FALSE, fig.align='center'}
+mapa2
+```
 
 ## Napredna analiza podatkov
 
@@ -155,6 +159,18 @@ print(mapa1)
 source("analiza/analiza.r", encoding="UTF-8")
 ```
 
+```{r mapa3, echo=FALSE, fig.align='center'}
+mapa3
+```
+
+
+```{r napoved.graf, echo=FALSE, fig.align='center'}
+napoved.graf
+```
+
+```{r linearna.regresija, echo=FALSE, fig.align='center'}
+linearna.regresija
+```
 ***
 
 Spodnji interaktivni prikaz nam omogoča, da izberemo slovensko občino in opazujemo gibanje števila brezposelnih po letih glede na izbrano stopnjo izobrazbe.
