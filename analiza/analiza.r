@@ -21,7 +21,7 @@ tabela.za.analizo <- struktura.prebivalstva %>% filter(leto == "2020",
 
 ################################# METODA VODITELJEV ####################################################
 
-library(cluster)
+# library(cluster)
 
 obrisi = function(podatki, hc = TRUE, od = 2, do = NULL) {
   n = nrow(podatki)
@@ -92,7 +92,7 @@ tabela.za.analizo.norm <- primerjava.elementi.skupine.na.zemljevidu %>%
 
 
 rownames(tabela.za.analizo.norm) <- primerjava.elementi.skupine.na.zemljevidu$obcina
-skupine <- kmeans(tabela.za.analizo.norm, 7, nstart=1000)
+skupine <- kmeans(tabela.za.analizo.norm, optimalno.stevilo.skupin, nstart=1000)
 skupine$tot.withinss
 
 skupine.zemljevid <- data.frame(obcina = primerjava.elementi.skupine.na.zemljevidu$obcina,
@@ -103,7 +103,7 @@ tmap_mode("view")
 
 #################################### NAPOVED ############################################################
 
-library(ranger)
+# library(ranger)
 
 slovenija.place.mesecno <- read_csv2("podatki/slovenija_place_mesecno.csv", skip = 2, na="-",
                                      locale=locale(encoding="Windows-1250"), col_names = TRUE)
@@ -118,20 +118,18 @@ slovenija.place.mesecno <- slovenija.place.mesecno %>%
                 ) %>%
   map_df(rev) 
 
-Lag <- function(x, n){c(rep(NA, n), x)[1:length(x)]}
+zamakni <- function(x, n){c(rep(NA, n), x)[1:length(x)]}
 
 naredi.df <- function(x){
   data.frame(placa = x,
-             placa1 = Lag(x, 1),
-             placa2 = Lag(x, 2),
-             placa3 = Lag(x, 3),
-             placa4 = Lag(x, 4))
-  
-}
+             placa1 = zamakni(x, 1),
+             placa2 = zamakni(x, 2),
+             placa3 = zamakni(x, 3),
+             placa4 = zamakni(x, 4))
+  }
 
 df <- naredi.df(slovenija.place.mesecno$neto)
 model = ranger(formula = placa ~ ., data = df %>% drop_na())
-
 
 n = nrow(df)
 
@@ -153,7 +151,6 @@ napoved.graf <- ggplot(pricakovanje) + geom_line(mapping = aes(x = datumi, y = d
     y = "Povprečna mesečna neto plača",
     title = "Gibanje povprečne mesečne neto plače v Sloveniji od leta 2006 do 2021"
   )
-napoved.graf
 
 ################################### LINEARNA REGRESIJA #####################################################
 
@@ -161,4 +158,5 @@ graf.regresija <- ggplot(pricakovanje, aes(x=datumi, y=df2.placa)) + geom_point(
   xlab("Leto") + ylab("Povprečna mesečna neto plača")+
   ggtitle("Rast povprečne mesečne plače v Sloveniji od leta 2006 do 2021")
 linearna.regresija <- graf.regresija + geom_smooth(method="lm", formula = y ~ x)
-linearna.regresija
+
+

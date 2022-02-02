@@ -29,7 +29,6 @@ graf1 <- ggplot(visokoizobrazeni.regije) +
   xlab("Spol")+ ylab("Delež visoko izobraženih") +
   ggtitle("Delež visokoizobraženih po statističnih regijah za leto 2020") + 
   scale_fill_manual(values = c("lightskyblue", "hotpink")) + facet_wrap(.~regija)
-graf1
 
 
 # GRAF 2: Delež brezposelnih po statističnih regijah za leto 2020
@@ -57,10 +56,11 @@ graf2 <- ggplot(prebivalstvo.in.brezposelni.po.regijah) +
     axis.text.x = element_text(angle = 45, vjust = 0.5),
     axis.title.x = element_text(vjust = 0)
   )
-graf2
-
 
 # GRAF 3: Porazdelitev plač po statističnih regijah za leto 2020
+
+# na tem mestu sem si dovolila aktualne podatke za Osilnico vnesti ročno, 
+# saj mi sicer na zemljevidu podatek manjka, grafi se ne rišejo pravilno ...
 
 povprecna.slovenska.placa.tabela.2020 <- placa.in.brezposelnost.po.obcinah %>% group_by(obcina) %>%
   filter(leto == "2020", vrsta.place == "neto", stopnja.izobrazbe == "Skupaj")
@@ -84,7 +84,6 @@ graf3 <- ggplot(povprecna.slovenska.placa.tabela.2020) +
   ) + geom_boxplot() + 
   xlab("Regija")+ ylab("Povprečna plača") +
   ggtitle("Porazdelitev plač po statističnih regijah za leto 2020")
-graf3
 
 
 # ANALIZA PO OBČINAH
@@ -94,7 +93,6 @@ graf3
 
 povprecna.slovenska.placa <- round(sum(povprecna.slovenska.placa.tabela.2020$povprecna.placa)
                                    /nrow(povprecna.slovenska.placa.tabela.2020),2)
-povprecna.slovenska.placa
 
 podatki.graf.4 <- place.in.studentke %>% 
   filter(leto == "2020") %>%
@@ -117,12 +115,10 @@ graf4 <- ggplot(podatki.graf.4) +
   aes(x = stopnja.razlike, y = stevilo.studentk, colour = povprecna ) + 
   geom_point(size = 1) + 
   geom_text(aes(label = ifelse(stopnja.razlike %in% podatki$stopnja.razlike, as.character(obcina), '')),
-                                    hjust = 0, vjust= 0, size = 3) +
+                                    hjust = -0.05, vjust= 0.1, size = 2.5) +
   xlab("Stopnja razlike v plači") + ylab("Število študentk na 100 študentov")+
   ggtitle("Občine po številu študentk in plačni vrzeli za leto 2020") +
   scale_colour_manual("Plača", values = c("maroon", "slateblue1"), labels = c("nadpovprečna", "podpovprečna")) 
-graf4
-
 
 # GRAF 5: Gibanje števila visokoizobraženih v občinah z najmanjšo plačno vrzeljo
 
@@ -146,8 +142,6 @@ graf5 <- ggplot(enake.obcine) + aes(x = leto, y = odstotek, color = spol) +
   xlab("Leto") + ylab("Delež visokoizobraženih") + 
   ggtitle("Gibanje deleža visokoizobraženih v občinah \n z najmanjšo plačno vrzeljo od leta 2012 do 2020") 
   
-graf5
-
 
 # GRAF 6: Izobrazbena struktura v občini z najvišjo povprečno plačo za leto 2020
 
@@ -178,7 +172,6 @@ graf6 <- ggplot(podatki.graf.6) +
                               axis.ticks = element_blank(),
                               panel.grid = element_blank()) +
   ggtitle(paste("Izobrazbena struktura za občino", podatki.graf.6$obcina[1], "v letu 2020", sep = " "))
-graf6
 
 
 ########################################## ZEMLJEVIDI #########################################################
@@ -188,7 +181,7 @@ source("lib/uvozi.zemljevid.r")
 obcine <- uvozi.zemljevid("http://baza.fmf.uni-lj.si/OB.zip", "OB",
                            pot.zemljevida="OB", encoding="Windows-1250")
 
-tm_shape(obcine) + tm_polygons("OB_UIME") + tm_legend(show=FALSE)
+# tm_shape(obcine) + tm_polygons("OB_UIME") + tm_legend(show=FALSE)
 obcine$OB_UIME <- factor(obcine$OB_UIME)
 
 lvls <- levels(obcine$OB_UIME)
@@ -210,7 +203,6 @@ obcine.placa.zemljevid <- merge(obcine, placa.na.zemljevidu,
 mapa1 <- tm_shape(obcine.placa.zemljevid) +
   tm_polygons("povprecna.placa", popup.vars = c("Višina povprečne plače: " = "povprecna.placa"))
 tmap_mode("view")
-# mapa1
 
 prebivalstvo.obcin.2020 <- prebivalstvo.obcin %>% filter(leto == "2020") %>%
    group_by(obcina) %>% mutate(prebivalstvo = sum(prebivalci)) %>%

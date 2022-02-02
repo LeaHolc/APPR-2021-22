@@ -18,6 +18,8 @@ library(rgeos)
 library(raster)
 
 library(GGally)
+library(cluster)
+library(ranger)
 
 
 
