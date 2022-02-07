@@ -124,10 +124,12 @@ graf4 <- ggplot(podatki.graf.4) +
 
 enake.obcine <- struktura.prebivalstva %>% 
   mutate(obcine = casefold(obcina, upper = TRUE), .keep = "unused"
-         ) %>%
-  dplyr::select(obcina = obcine, leto, spol, izobrazba, stevilo, odstotek
-                ) %>%
-  filter(obcina %in% podatki$obcina, izobrazba == " Višješolska, visokošolska - Skupaj")
+          ) %>%
+   dplyr::select(obcina = obcine, leto, spol, izobrazba, stevilo, odstotek) %>%
+  rename("obcina.nova" = "obcina")
+
+enake.obcine <- enake.obcine %>%
+  filter(obcina.nova %in% podatki$obcina, izobrazba == " Višješolska, visokošolska - Skupaj")
 
 graf5 <- ggplot(enake.obcine) + aes(x = leto, y = odstotek, color = spol) +
   geom_line() + 
@@ -138,7 +140,7 @@ graf5 <- ggplot(enake.obcine) + aes(x = leto, y = odstotek, color = spol) +
   scale_color_manual("Spol",
                      values = c("lightskyblue",  "orchid"),
                      labels = c("Moški", "Ženske")) +
-  facet_wrap(.~obcina) +
+  facet_wrap(.~obcina.nova) +
   xlab("Leto") + ylab("Delež visokoizobraženih") + 
   ggtitle("Gibanje deleža visokoizobraženih v občinah \n z najmanjšo plačno vrzeljo od leta 2012 do 2020") 
   
